@@ -1,6 +1,9 @@
 import pandas as pd
 
 
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+
 df = pd.read_csv('../source/ratings.csv')
 
 print('First few rows of the original dataset:')
@@ -14,10 +17,10 @@ print(df.describe())
 
 df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
 
+duplicates = df.duplicated().sum()
 df.drop_duplicates(inplace=True)
 
-print('Missing values:')
-print(df.isnull().sum())
+missing_values = df.isnull().sum()
 
 print('First few rows of the cleaned dataset:')
 print(df.head())
@@ -27,5 +30,9 @@ print(df.info())
 
 print('Cleaned dataset summary statistics:')
 print(df.describe())
+
+print(f'Number of duplicates removed: {duplicates}')
+print('Missing values:')
+print(missing_values)
 
 df.to_csv('../cleaned_data/ratings.csv', encoding='utf-8')

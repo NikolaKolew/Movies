@@ -1,5 +1,8 @@
 import pandas as pd
 
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+
 df = pd.read_csv('../source/ratings_small.csv')
 
 print('First few rows of the original dataset:')

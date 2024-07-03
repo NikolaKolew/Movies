@@ -2,7 +2,6 @@ import pandas as pd
 
 df = pd.read_csv("../source/links_small.csv")
 
-# Convert tmdbId to integer, replacing NaN with -1
 df['tmdbId'] = df['tmdbId'].fillna(-1).astype(int)
 
 print(df.head())
