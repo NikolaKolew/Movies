@@ -4,8 +4,13 @@ from movies.logger.logger import setup_logger
 
 
 class MovieDataset:
+    """Class for managing and analyzing a movie dataset."""
     def __init__(self, csv_file_path):
+        """
+        Initialize the MovieDataset with a path to the CSV file.
 
+        :param csv_file_path: str, path to the CSV file
+        """
         self.logger = setup_logger(__name__)
         try:
             self.df = pd.read_csv(csv_file_path)
@@ -15,22 +20,29 @@ class MovieDataset:
             raise
 
     def get_unique_movies_count(self):
+        """Return the number of unique movies."""
         return self.df['title'].nunique()
 
     def get_average_rating(self):
+        """Return the average rating of all movies."""
         return self.df['rating'].mean()
 
     def get_top_5_movies(self):
+        """Return the top 5 highest rated movies."""
         return self.df.sort_values(by='rating', ascending=False).head(5)
 
     def get_movies_per_year(self):
+        """Return the number of movies released each year."""
         return self.df['release_date'].value_counts().sort_index()
 
     def get_movies_per_genre(self):
+        """Return the number of movies in each genre."""
         genres = self.df['genres'].str.split(',').explode().value_counts()
         return genres
 
     def print_results(self):
+        """Compute and store the analysis results."""
+
         self.results = {}
 
         # Number of unique movies
@@ -62,6 +74,8 @@ class MovieDataset:
         self._print_results_to_console()
 
     def _print_results_to_console(self):
+        """Print the stored analysis results to the console."""
+
         print(f"Number of unique movies: {self.results['unique_movies_count']}")
         print(f"Average rating of all movies: {self.results['average_rating']:.2f}")
 
@@ -78,6 +92,10 @@ class MovieDataset:
             print(f"{genre}: {count}")
 
     def save_to_json(self, json_file_path):
+        """Save the dataset to a JSON file.
+
+        :param json_file_path: str, path to the JSON file
+        """
         try:
             with open(json_file_path, 'w') as f:
                 json.dump(self.results, f, indent=4)
