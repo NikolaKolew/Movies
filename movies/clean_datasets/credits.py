@@ -2,26 +2,26 @@ import pandas as pd
 import json
 from ast import literal_eval
 from collections import ChainMap
+
+
 pd.set_option('display.max_columns', None)
-
-
 
 df = pd.read_csv("../source/credits.csv")
 
-# print('Dataset info:')
-# print(df.info())
-#
-# print('First few rows of the dataset:')
-# print(df.head())
-#
-# print('Summary statistics:')
-# print(df.describe())
-#
-# print('Missing values:')
-# print(df.isnull().sum())
-#
-# print('Number of duplicate rows:', df.duplicated().sum())
-#
+print('Dataset info:')
+print(df.info())
+
+print('First few rows of the dataset:')
+print(df.head())
+
+print('Summary statistics:')
+print(df.describe())
+
+print('Missing values:')
+print(df.isnull().sum())
+
+print('Number of duplicate rows:', df.duplicated().sum())
+
 
 df = df.drop_duplicates().reset_index(drop=True)
 print(df.head(3))

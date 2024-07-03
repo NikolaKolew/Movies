@@ -18,13 +18,13 @@ print(df.isnull().sum())
 print('Data types:')
 print(df.dtypes)
 
-# Clean up the 'popularity' column
+
 df['popularity'] = pd.to_numeric(df['popularity'], errors='coerce')
 
 # Convert 'budget' and 'revenue' to numeric, replacing any non-numeric values with NaN
 df['budget'] = pd.to_numeric(df['budget'], errors='coerce')
 df['revenue'] = pd.to_numeric(df['revenue'], errors='coerce')
-
+df['id'] = pd.to_numeric(df['id'], errors='coerce')
 # Convert 'release_date' to datetime
 df['release_date'] = pd.to_datetime(df['release_date'], errors='coerce')
 
@@ -70,4 +70,4 @@ print(df.info())
 print('First few rows of cleaned dataset:')
 print(df.head(23))
 
-df.to_csv('../cleaned_data/movies_metadata_cleaned.csv', encoding='utf-8')
+df.to_csv('../cleaned_data/movies_metadata_cleaned.csv', encoding='utf-8', index=False)

@@ -23,7 +23,6 @@ df['imdbId'] = df['imdbId'].astype(int)
 # Fill missing values in tmdbId with -1 and convert to integer type
 df['tmdbId'] = df['tmdbId'].fillna(-1).astype(int)
 
-# Remove any rows with invalid data (e.g., negative IDs except for our placeholder -1)
 df = df[(df['movieId'] > 0) & (df['imdbId'] > 0) & ((df['tmdbId'] > 0) | (df['tmdbId'] == -1))]
 
 print('Cleaned dataset info:')
