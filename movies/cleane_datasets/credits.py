@@ -1,5 +1,9 @@
 import pandas as pd
 import json
+from ast import literal_eval
+from collections import ChainMap
+pd.set_option('display.max_columns', None)
+
 
 
 df = pd.read_csv("../source/credits.csv")
@@ -20,19 +24,33 @@ df = pd.read_csv("../source/credits.csv")
 #
 
 df = df.drop_duplicates().reset_index(drop=True)
-
-def parse_json(json_str):
+print(df.head(3))
+def safe_eval(x):
+    if pd.isna(x):
+        return []
     try:
-        return json.loads(json_str.replace("'", '"'))
+        return literal_eval(x)
     except:
         return []
 
 # Parse JSON in 'cast' and 'crew' columns
-df['cast'] = df['cast'].apply(parse_json)
-df['crew'] = df['crew'].apply(parse_json)
+df1 = df['cast'] = df['cast'].apply(safe_eval).apply(lambda x: dict(ChainMap(*x)))
+df2 = df['crew'] = df['crew'].apply(safe_eval).apply(lambda x: dict(ChainMap(*x)))
+df1 = pd.concat([df['cast'].apply(pd.Series), df['id']], axis=1)
+df2 = pd.concat([df['crew'].apply(pd.Series), df['id']], axis=1)
+
+#
+# print('Cleaned dataset info:')
+# print(df1.head(3))
+# print(df1.info())
+# print(df2.head(3))
+# print(df2.info())
+
+result = pd.concat([df1, df2], axis=1, join="inner")
+
+print(result.head(3))
+print(result.info())
+df.fillna(value=0)
 
 
-print('Cleaned dataset info:')
-print(df.info())
-
-df.to_csv('../cleaned_data/credits.csv', encoding='utf-8')
+result.to_csv('../cleaned_data/credits.csv', encoding='utf-8')
